@@ -24,6 +24,8 @@ public class ProducerConfig {
 
     private Session session = null;
 
+    private MessageProducer messageProducer = null;
+
     public ConnectionFactory getConnectionFactory() {
         if (this.connectionFactory == null) {
             // Create a ConnectionFactory
@@ -51,7 +53,6 @@ public class ProducerConfig {
 
     public MessageProducer getMessageProducer(int userInput) throws JMSException {
         Destination destination = null;
-        MessageProducer messageProducer = null;
         // Create the destination (Topic or Queue)
         switch (userInput) {
             case 1: {
@@ -69,13 +70,16 @@ public class ProducerConfig {
         }
         if (destination != null) {
             // Create a MessageProducer from the Session to the Topic or Queue
-            messageProducer = getSession().createProducer(destination);
-            messageProducer.setDeliveryMode(DeliveryMode.NON_PERSISTENT);
+            this.messageProducer = getSession().createProducer(destination);
+            this.messageProducer.setDeliveryMode(DeliveryMode.PERSISTENT);
         }
         return messageProducer;
     }
 
     public void closeResources() throws JMSException {
+        if (this.messageProducer != null) {
+            this.messageProducer.close();
+        }
         if (getSession() != null) {
             getSession().close();
         }

@@ -14,6 +14,8 @@ public class ProducerRunner {
 
     private static ProducerConfig producerConfig = null;
 
+    private static Scanner sc = new Scanner(System.in);
+
     @Autowired
     public void setProducerConfig(ProducerConfig producerConfig) {
         if (ProducerRunner.producerConfig == null) {
@@ -33,28 +35,26 @@ public class ProducerRunner {
         System.out.println("Please make a selection:");
         System.out.println("1. For Point-To-Point Connection");
         System.out.println("2. For Publisher-Subscriber Connection");
-        final Scanner sc = new Scanner(System.in);
         try {
             userDestinationInputSelection = sc.nextInt();
         } catch (Exception ex) {
             ex.printStackTrace();
-        } finally {
-            sc.close();
         }
     }
 
     private static void sendMessage() {
-        final Scanner scc = new Scanner(System.in);
         try {
             final MessageProducer messageProducer =
                     producerConfig.getMessageProducer(userDestinationInputSelection);
-            System.out.print("Please enter your message: ");
-            String message = scc.nextLine();;
+            sc.nextLine();
+            System.out.println("Please enter your message:");
+            final String message = sc.nextLine();
             messageProducer.send(producerConfig.getSession().createTextMessage(message));
+            System.out.println("Message sent successfully: " + message);
         } catch (Exception ex) {
             ex.printStackTrace();
         } finally {
-            scc.close();
+            sc.close();
             try {
                 producerConfig.closeResources();
             } catch (JMSException e) {
