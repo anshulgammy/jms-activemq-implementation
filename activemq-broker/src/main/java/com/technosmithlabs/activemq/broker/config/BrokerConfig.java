@@ -1,4 +1,4 @@
-package com.technosmithlabs.activemq.config;
+package com.technosmithlabs.activemq.broker.config;
 
 import org.apache.activemq.broker.BrokerService;
 import org.apache.activemq.broker.TransportConnector;

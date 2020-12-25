@@ -6,6 +6,7 @@
     <packaging>pom</packaging>
     <modules>
         <module>activemq-broker</module>
+        <module>activemq-producer</module>
     </modules>
     <parent>
         <groupId>org.springframework.boot</groupId>

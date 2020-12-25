@@ -1,4 +1,4 @@
-package com.technosmithlabs.activemq;
+package com.technosmithlabs.activemq.broker;
 
 import org.apache.activemq.broker.BrokerService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,10 +24,10 @@ public class BrokerRunner {
 
     private static void startBroker() {
         try {
-            brokerService.start();
+            BrokerRunner.brokerService.start();
             System.out.println(brokerService.getBrokerName() + " started successfully");
-            synchronized (brokerService) {
-                brokerService.wait();
+            synchronized (BrokerRunner.brokerService) {
+                BrokerRunner.brokerService.wait();
             }
         } catch (Exception e) {
             e.printStackTrace();
