@@ -47,10 +47,15 @@ public class ProducerRunner {
             final MessageProducer messageProducer =
                     producerConfig.getMessageProducer(userDestinationInputSelection);
             sc.nextLine();
-            System.out.println("Please enter your message:");
-            final String message = sc.nextLine();
-            messageProducer.send(producerConfig.getSession().createTextMessage(message));
-            System.out.println("Message sent successfully: " + message);
+            while (true) {
+                System.out.println("Please enter your message:");
+                final String message = sc.nextLine();
+                messageProducer.send(producerConfig.getSession().createTextMessage(message));
+                System.out.println("Message sent successfully: " + message);
+                if ("exit".equals(message)) {
+                    break;
+                }
+            }
         } catch (Exception ex) {
             ex.printStackTrace();
         } finally {

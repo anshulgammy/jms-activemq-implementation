@@ -26,14 +26,18 @@ public class ConsumerTask extends Thread {
             final MessageConsumer messageConsumer = consumerConfig.getMessageConsumer(userDestinationInputSelection);
             // Wait for a message
             while (true) {
-                final Message message = messageConsumer.receive(60000);
+                final Message message = messageConsumer.receive(1000);
                 if (message instanceof TextMessage) {
                     final TextMessage textMessage = (TextMessage) message;
                     final String messageText = textMessage.getText();
-                    System.out.println("Received: " + messageText);
-                } else {
-                    System.out.println("Received: " + message);
-                }
+                    System.out.println("Message received by Consumer thread " + Thread.currentThread().getId() + " : " + messageText);
+                    if ("exit".equals(messageText)) {
+                        System.out.println("Shutting down the consumer");
+                        break;
+                    }
+                }/* else {
+                    System.out.println("Received by " + this.getName() + ": " + message);
+                }*/
             }
         } catch (JMSException e) {
             e.printStackTrace();
