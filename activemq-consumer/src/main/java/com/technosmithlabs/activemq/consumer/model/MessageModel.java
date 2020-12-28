@@ -1,11 +1,17 @@
 package com.technosmithlabs.activemq.consumer.model;
 
+import org.springframework.stereotype.Component;
+
+import javax.annotation.PostConstruct;
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.HashMap;
+import java.util.Map;
 
 @Entity
 @Table(name = "TSL_MESSAGES")
 @Access(AccessType.FIELD)
+@Component
 public class MessageModel {
 
     @Id
@@ -18,11 +24,16 @@ public class MessageModel {
     private String message;
     @Column(name = "MESSAGE_TIME")
     private LocalDateTime messageTime;
+
     @Embedded
     @AttributeOverrides({
-            @AttributeOverride(name = "communicationModeId", column = @Column(name = "COMMUNICATION_MODE_ID"))
+            @AttributeOverride(name = "communicationModeId", column = @Column(name = "COMMUNICATION_MODE_ID")),
+            @AttributeOverride(name = "communicationModeName", column = @Column(name = "COMMUNICATION_MODE_NAME"))
     })
     private CommunicationMode communicationMode;
+
+    @Transient
+    private Map<Integer, String> communicationModes = new HashMap<>();
 
     public Long getId() {
         return id;
@@ -59,9 +70,20 @@ public class MessageModel {
     public MessageModel() {
     }
 
-    public MessageModel(String consumerName, String message, LocalDateTime messageTime) {
+    public MessageModel(String consumerName, String message, LocalDateTime messageTime, CommunicationMode communicationMode) {
         this.consumerName = consumerName;
         this.message = message;
         this.messageTime = messageTime;
+        this.communicationMode = communicationMode;
+    }
+
+    @PostConstruct
+    private void setCommunicationModeValues() {
+        this.communicationModes.put(1, "PEERTOPEER");
+        this.communicationModes.put(2, "PUBSUB");
+    }
+
+    public Map<Integer, String> getCommunicationModes() {
+        return this.communicationModes;
     }
 }

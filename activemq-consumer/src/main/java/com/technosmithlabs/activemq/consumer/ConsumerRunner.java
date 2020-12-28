@@ -38,10 +38,8 @@ public class ConsumerRunner {
             final ExecutorService executorService = Executors.newFixedThreadPool(3);
             System.out.println("Consumers have started listening!");
             for (int i = 0; i < 3; i++) {
-                executorService.submit(consumerTask);
+                executorService.execute(consumerTask);
             }
-            executorService.shutdown();
-            executorService.awaitTermination(60, TimeUnit.SECONDS);
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
