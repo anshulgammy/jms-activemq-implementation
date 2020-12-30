@@ -3,7 +3,6 @@ package com.technosmithlabs.activemq.consumer.config;
 import com.technosmithlabs.activemq.consumer.model.CommunicationMode;
 import com.technosmithlabs.activemq.consumer.model.MessageModel;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.AutoConfigureOrder;
 import org.springframework.stereotype.Component;
 
 import javax.jms.JMSException;
